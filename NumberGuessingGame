@@ -1,0 +1,64 @@
+//Number Guessing Game
+
+#include <iostream>
+using namespace std;
+
+int numGen() {
+    return rand() % 100 + 1;
+}
+
+void game(){
+//start game
+char answer;
+short input;
+short numGuesses = 0;
+short highScore = 0;
+bool gameGoing = true;
+
+bool wantPlay = 1;
+while(wantPlay == true){
+cout << "Do you want to play the game or know your high score? y/n " << endl;
+cin >> answer;
+if(answer == 'y'){
+    gameGoing = true;
+    numGuesses = 0;
+// gets number
+int number = numGen();
+while(gameGoing == 1){
+//ask user for guess
+cout << "Guess a number between 1 and 100. " << endl;
+cin >> input;
+numGuesses ++;
+//give feedback
+if(input != number){
+    if(input < number)
+        cout << "Too Low " << endl;
+    else
+        cout << "Too High " << endl;
+}
+else{
+    cout << "Congrats you won!" << endl;
+    cout << "You made it in " << numGuesses << " guesses!" << endl;
+    gameGoing = 0;
+}
+}
+if(numGuesses < highScore || highScore == 0)
+    highScore = numGuesses;
+//after game, ask about playing again and state score/high score
+cout << "You're high score is currectly " << highScore << endl;
+cout << "Play again? y/n" << endl;
+cin >> answer;
+if(answer == 'n')
+wantPlay = 0;
+}
+else if(answer == 'n'){
+    wantPlay = 0;
+}
+}
+}
+
+int main(){
+    srand(time(0));
+    game();
+    return 0;
+}
