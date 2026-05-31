@@ -1,0 +1,92 @@
+//Hangman Project
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+string ansGen(){
+    string words[] = {"grape", "planet", "bridge", "lantern", "chimney",
+                      "frost", "compass", "thunder", "marble", "cactus"};
+    return words[rand() % 10];
+}
+
+char validateInput(){
+    bool isValid = false;
+    char guess;
+    while(isValid == false){
+        cout << "What is your guess? " << endl;
+        cin >> guess;
+        guess = tolower(guess);
+        if(size(guess) == 1 && isalpha(guess))
+            isValid = 1;
+    }
+    return guess;
+}
+
+string updateString(string guessString, string ans, char guess){
+    for(int i = 0; i < ans.size(); i++){
+        if(guess == ans[i])
+            guessString[i] = ans[i];
+    }
+
+    return guessString;
+}
+
+void endOfGame(int score){
+    if(score <= 6)
+        cout << "Congrats you won! You had " << score << " incorrect answers" << endl;
+    else
+        cout << "Unfortunate loss. Better luck next time!" << endl;
+
+}
+
+void gameLoop(){
+    string ans = ansGen();
+    string guessString(ans.size(), '_');
+    int score = 0;
+    char guess;
+    bool result = false;
+    bool isWrong = true;
+
+    while(score <= 6 && result != true){
+        isWrong = true;
+        //Need Input for guesses
+        guess = validateInput();
+        
+        //Need to increment score
+        for(int i = 0; i <= ans.length(); i++){
+            if(ans[i] == guess)
+                isWrong = false;
+        }
+        if(isWrong == false)
+            isWrong = true;
+        else
+            score++;
+        
+        //Need UpdatedString
+        guessString = updateString(guessString, ans, guess);
+
+        //Evaluating WinCon
+        if(guessString == ans)
+            result = true;
+
+    }
+
+    //Need a function for end of game stuff
+    endOfGame(score);
+}
+
+int main(){
+    bool wantPlay = 1;
+    char input;
+    srand(time(0));
+    while(wantPlay == 1){
+        gameLoop();
+        cout << "Do you want to play again? y/n" << endl;
+        cin >> input;
+        if(input == 'n')
+            wantPlay = 0;
+    }
+    return 0;
+}
+
